@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="/external/default.css" type="text/css"/>
 <link rel="stylesheet" href="/external/writting.css" type="text/css"/>
 <link rel="stylesheet" href="/external/md.css" type="text/css"/>
+<link rel="stylesheet" href="/external/mermaid/mermaid.forest.css" type="text/css"/>
 <style>
 .leanoteNav, .layout-toggler {
   display: none;
@@ -99,14 +100,13 @@ function log(o) {
 <textarea id="life">leanote Markdown 语法手册
 
 
-```sequence
+```sequencex
 Alice->Bob: Hello Bob, how are you?
 Note right of Bob: Bob thinks
 Bob-->Alice: I am good thanks!
 ```
  
 And flow charts like this:
- 
 ```flow
 st=>start: Start
 e=>end
@@ -116,6 +116,30 @@ cond=>condition: Yes or No?
 st->op->cond
 cond(yes)->e
 cond(no)->op
+```
+
+```mermaid
+graph LR;
+  B["fa:fa-twitter for peace"]
+  B-->C[fa:fa-ban forbidden]
+  B-->D(fa:fa-spinner);
+  B-->E(A fa:fa-camera-retro perhaps?);
+```
+
+```mermaid
+graph TD;
+ A[Hard edge] -->|Link text| B(Round edge)
+ B --> C{Decision}
+ C -->|One| D[Result one]
+ C -->|Two| E[Result two]
+```
+
+```mermaid
+graph LR;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
 ```
 
 ```

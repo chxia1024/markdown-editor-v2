@@ -22,7 +22,8 @@ requirejs.config({
         Diagram: 'libs/uml/sequence-diagram.min',
         'diagram-grammar': 'libs/uml/diagram-grammar.min',
         raphael: 'libs/uml/raphael.min',
-        'flow-chart': 'libs/uml/flowchart.amd-1.3.4.min'
+        'flow-chart': 'libs/uml/flowchart.amd-1.3.4.min',
+        'mermaid': 'libs/uml/mermaid.min'
     },
     shim: {
         underscore: {

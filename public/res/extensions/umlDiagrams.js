@@ -15,6 +15,17 @@ define([
 	var umlDiagrams = new Extension("umlDiagrams", "UML Diagrams", true);
 	// umlDiagrams.settingsBlock = umlDiagramsSettingsBlockHTML;
 	umlDiagrams.defaultConfig = {
+	        mermaidConfig: {
+			startOnLoad:true,
+			cloneCssStyles:false,
+			htmlLabels:false,
+			callback:function(id){
+				console.log(id,' rendered');
+			},
+			flowchart:{
+			useMaxWidth:true
+	                }
+		},
 		flowchartOptions: [
 			'{',
 			'   "line-width": 2,',
@@ -74,22 +85,31 @@ define([
 		});
 	}
 
-	function renderFlow() {
-		var flows = previewContentsElt.querySelectorAll('.prettyprint > .language-flow');
-		if (!flows || flows.length == 0) {
+
+	function renderMermaid() {
+		var mermaids = previewContentsElt.querySelectorAll('.prettyprint > .language-mermaid');
+		if (!mermaids || mermaids.length == 0) {
 			return;
 		}
-		// console.log('flows')
-		require(['flow-chart'], function (flowChart) {
-			_.each(flows, function(elt) {
+		require(['mermaid'], function (mermaidRender) {
+			_.each(mermaids, function(elt) {
 				try {
-					var chart = flowChart.parse(elt.textContent);
 					var preElt = elt.parentNode;
 					var containerElt = crel('div', {
-						class: 'flow-chart'
+						class: 'mermaid'
 					});
+					var insertSvg = function(svgCode, bindFunctions){
+					        containerElt.innerHTML = svgCode;
+					        containerElt.getElementsByTagName('svg')[0].setAttribute("viewBox",preElt.parentNode.getAttribute('viewBox'));
+					        containerElt.getElementsByTagName('svg')[0].setAttribute("height","100%");
+						if(typeof callback !== 'undefined'){
+						   callback(id);
+						}
+						bindFunctions(containerElt);
+					};
+					mermaidRender.mermaidAPI.initialize(umlDiagrams.config.mermaidConfig);
+					var graph = mermaidRender.mermaidAPI.render(preElt.parentNode.id, elt.textContent, insertSvg);
 					preElt.parentNode.replaceChild(containerElt, preElt);
-					chart.drawSVG(containerElt, JSON.parse(umlDiagrams.config.flowchartOptions));
 				}
 				catch(e) {
 					console.error(e);
@@ -102,6 +122,7 @@ define([
 		editor.hooks.chain("onPreviewRefresh", function() {
 			renderSequence();
 			renderFlow();
+			renderMermaid();
 		});
 	};
 
