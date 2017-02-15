@@ -15,16 +15,16 @@ define([
 	var umlDiagrams = new Extension("umlDiagrams", "UML Diagrams", true);
 	// umlDiagrams.settingsBlock = umlDiagramsSettingsBlockHTML;
 	umlDiagrams.defaultConfig = {
-	        mermaidConfig: {
-			startOnLoad:true,
+		mermaidConfig: {
+			startOnLoad:false,
 			cloneCssStyles:false,
 			htmlLabels:false,
 			callback:function(id){
 				console.log(id,' rendered');
 			},
 			flowchart:{
-			useMaxWidth:true
-	                }
+				useMaxWidth:true
+			}
 		},
 		flowchartOptions: [
 			'{',
@@ -99,13 +99,10 @@ define([
 						class: 'mermaid'
 					});
 					var insertSvg = function(svgCode, bindFunctions){
-					        containerElt.innerHTML = svgCode;
-					        containerElt.getElementsByTagName('svg')[0].setAttribute("viewBox",preElt.parentNode.getAttribute('viewBox'));
-					        containerElt.getElementsByTagName('svg')[0].setAttribute("height","100%");
-						if(typeof callback !== 'undefined'){
-						   callback(id);
-						}
-						bindFunctions(containerElt);
+						containerElt.innerHTML = svgCode;
+						containerElt.getElementsByTagName('svg')[0].setAttribute("viewBox",preElt.parentNode.getAttribute('viewBox'));
+						containerElt.getElementsByTagName('svg')[0].setAttribute("height","100%");
+						bindFunctions && bindFunctions(containerElt);
 					};
 					mermaidRender.mermaidAPI.initialize(umlDiagrams.config.mermaidConfig);
 					var graph = mermaidRender.mermaidAPI.render(preElt.parentNode.id, elt.textContent, insertSvg);
